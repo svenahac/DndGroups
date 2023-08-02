@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -39,7 +39,6 @@ export default function LoginPage() {
       .catch((err) => {
         console.log(err);
       });
-
     navigate("/home");
   }
 
@@ -49,7 +48,7 @@ export default function LoginPage() {
       className="m-0 flex flex-col min-h-screen justify-center items-center bg-gradient-to-r from-rose-700 to-red-700"
     >
       <form>
-        <div className="mb-10 text-4xl text-white flex justify-center align-middle items-center">
+        <div className="mb-0 text-4xl text-white flex justify-center align-middle items-center">
           DnD Group Finder
         </div>
         <div className="rounded-xl w-85 h-100 bg-white flex flex-col justify-center items-center ">

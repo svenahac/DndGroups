@@ -1,19 +1,37 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { supabase } from "../api/supabaseClient";
 import PostCard from "../components/PostCard";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
+  const navigate = useNavigate();
+
   const [showModal, setShowModal] = useState(false);
 
   const [posts, setPosts] = useState([]);
-  useEffect(() => {
+
+  const [user, setUser] = useState({});
+
+  async function getUser() {
+    const { data } = await axios.get("http://localhost:6969/users/login", {
+      withCredentials: true,
+    });
+    setUser(data.user);
+  }
+
+  useLayoutEffect(() => {
     getPosts();
+    getUser();
   }, []);
 
   async function getPosts() {
     try {
-      const { data, error } = await supabase.from("Post").select("*");
+      const { data, error } = await supabase
+        .from("Post")
+        .select("*")
+        .order("created_at", { ascending: false });
       if (error) throw error;
       if (data != null) {
         setPosts(data);
@@ -38,7 +56,7 @@ export default function HomePage() {
         })
         .single();
       if (error) throw error;
-      window.location.reload();
+      await getPosts();
     } catch (err) {
       console.error(err.message);
     }
