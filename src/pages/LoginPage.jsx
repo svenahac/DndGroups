@@ -1,18 +1,48 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [loginData, setLoginData] = useState({
-    email: "",
+    username: "",
     password: "",
-    wrong_info: false,
   });
 
   const navigate = useNavigate();
   const navigateToRegister = () => {
     navigate("/register");
   };
+
+  const handle_input_change = (event) => {
+    const { name, value } = event.target;
+    setLoginData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  function postLogin() {
+    axios
+      .post(
+        "http://localhost:6969/users/login/",
+        {
+          username: loginData.username,
+          password: loginData.password,
+        },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        console.log("Sent to server...");
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    navigate("/home");
+  }
+
   return (
     <div
       id="LoginPage"
@@ -25,19 +55,20 @@ export default function LoginPage() {
         <div className="rounded-xl w-85 h-100 bg-white flex flex-col justify-center items-center ">
           <div className="relative z-0 mb-6 w-72">
             <input
-              type="email"
-              name="email"
-              id="email"
+              type="username"
+              name="username"
+              id="username"
               className="block py-2.5 px-0 w-full text-sm text-red-700 bg-transparent border-0 border-b-2 border-red-700 appearance-none focus:outline-none focus:ring-0 focus:border-red-700 peer"
               placeholder=" "
               required
-              value={loginData.email}
+              value={loginData.username}
+              onChange={handle_input_change}
             />
             <label
-              htmlFor="email"
+              htmlFor="username"
               className="peer-focus:font-medium absolute left-0 text-sm text-red-700 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
-              E-mail
+              Username
             </label>
           </div>
           <div className="relative z-0 mb-6 w-72">
@@ -49,6 +80,7 @@ export default function LoginPage() {
               placeholder=" "
               required
               value={loginData.password}
+              onChange={handle_input_change}
             />
             <label
               htmlFor="password"
@@ -61,15 +93,12 @@ export default function LoginPage() {
             <button
               type="submit"
               className="text-white bg-red-700 hover:bg-rose-600 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2"
+              onClick={postLogin}
             >
               Login
             </button>
           </div>
-          {loginData.wrong_info ? (
-            <div>Error, wrong information</div>
-          ) : (
-            <div></div>
-          )}
+
           <div className="flex flex-col items-center ">
             <p className="text-red-700 text-sm">
               Haven't created an account yet?

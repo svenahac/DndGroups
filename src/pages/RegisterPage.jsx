@@ -1,9 +1,41 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
+
 export default function RegisterPage() {
+  const [registerData, setRegisterData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
   const navigate = useNavigate();
   const navigateToLogin = () => {
     navigate("/login");
   };
+
+  const handle_input_change = (event) => {
+    const { name, value } = event.target;
+    setRegisterData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  function postRegister() {
+    axios
+      .post("http://localhost:6969/users/register/", {
+        username: registerData.username,
+        email: registerData.email,
+        password: registerData.password,
+      })
+      .then((res) => {
+        console.log("Sent to server...");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   return (
     <div
       id="LoginPage"
@@ -21,6 +53,7 @@ export default function RegisterPage() {
             className="block py-2.5 px-0 w-full text-sm text-red-700 bg-transparent border-0 border-b-2 border-red-700 appearance-none focus:outline-none focus:ring-0 focus:border-red-700 peer"
             placeholder=" "
             required
+            onChange={handle_input_change}
           />
           <label
             htmlFor="username"
@@ -37,6 +70,7 @@ export default function RegisterPage() {
             className="block py-2.5 px-0 w-full text-sm text-red-700 bg-transparent border-0 border-b-2 border-red-700 appearance-none focus:outline-none focus:ring-0 focus:border-red-700 peer"
             placeholder=" "
             required
+            onChange={handle_input_change}
           />
           <label
             htmlFor="email"
@@ -53,6 +87,7 @@ export default function RegisterPage() {
             className="block py-2.5 px-0 w-full text-sm text-red-700 bg-transparent border-0 border-b-2 border-red-700 appearance-none focus:outline-none focus:ring-0 focus:border-red-700 peer"
             placeholder=" "
             required
+            onChange={handle_input_change}
           />
           <label
             htmlFor="password"
@@ -69,6 +104,7 @@ export default function RegisterPage() {
             className="block py-2.5 px-0 w-full text-sm text-red-700 bg-transparent border-0 border-b-2 border-red-700 appearance-none focus:outline-none focus:ring-0 focus:border-red-700 peer"
             placeholder=" "
             required
+            onChange={handle_input_change}
           />
           <label
             htmlFor="confirm_password"
@@ -80,6 +116,9 @@ export default function RegisterPage() {
         <div className="w-36 h-10 mb-2 flex flex-col items-center">
           <button
             type="button"
+            onClick={() => {
+              postRegister();
+            }}
             className="text-white bg-red-700 hover:bg-rose-600 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2"
           >
             Register
