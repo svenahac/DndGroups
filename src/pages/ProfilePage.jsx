@@ -7,18 +7,23 @@ import PostCard from "../components/PostCard";
 export default function ProfilePage() {
   const { state } = useLocation();
   const [posts, setPosts] = useState([]);
+  const [rating, setRating] = useState(0);
 
   async function getRating() {
-    const { data, error } = await supabase
-      .from("Rating")
-      .select("*")
-      .eq("u_id", state.id);
-    if (error) throw error;
-    if (data != null) {
-      console.log(data);
+    try {
+      const { data, error } = await supabase
+        .from("Rating")
+        .select("*")
+        .eq("u_id", state.id);
+      if (error) throw error;
+      if (data != null) {
+        setRating(data[0].rating);
+      }
+    } catch (err) {
+      console.error(err.message);
     }
   }
-
+  
   async function getMyPosts() {
     try {
       const { data, error } = await supabase
@@ -29,8 +34,6 @@ export default function ProfilePage() {
       if (error) throw error;
       if (data != null) {
         setPosts(data);
-
-        console.log(data);
       }
     } catch (err) {
       console.error(err.message);
@@ -56,6 +59,7 @@ export default function ProfilePage() {
   }
 
   useEffect(() => {
+    getRating();
     getMyPosts();
   }, []);
 
@@ -71,7 +75,7 @@ export default function ProfilePage() {
             </div>
             <div>Email: {state.email}</div>
             <div>Date Of Birth: {state.date_of_birth}</div>
-            <div>Rating: 0/5</div>
+            <div>Rating: {rating}/5</div>
           </div>
         </div>
         <div className="flex flex-row justify-center w-5/6 font-bold mt-2 mb-2 text-3xl">

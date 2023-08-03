@@ -226,7 +226,7 @@ export default function HomePage() {
                           form="form1"
                           style={{ transition: "all .15s ease" }}
                         >
-                          Request
+                          Create
                         </button>
                       </div>
                     </div>
