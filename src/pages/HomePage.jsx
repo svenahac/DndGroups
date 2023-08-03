@@ -4,6 +4,7 @@ import { supabase } from "../api/supabaseClient";
 import PostCard from "../components/PostCard";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { HashLoader } from "react-spinners";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -13,6 +14,8 @@ export default function HomePage() {
   const [posts, setPosts] = useState([]);
 
   const [user, setUser] = useState({});
+
+  const [loading, setLoading] = useState(true);
 
   async function getUser() {
     const { data } = await axios.get("http://localhost:6969/users/login", {
@@ -35,6 +38,9 @@ export default function HomePage() {
       if (error) throw error;
       if (data != null) {
         setPosts(data);
+        setTimeout(() => {
+          setLoading(false);
+        }, 100);
         console.log(data);
       }
     } catch (err) {
@@ -52,7 +58,8 @@ export default function HomePage() {
           location: postForm.location,
           date: postForm.datetime,
           size: postForm.size,
-          u_id: "86854e36-71b8-4dc8-95c3-904419a1f199",
+          creator_name: user.username,
+          u_id: user.id,
         })
         .single();
       if (error) throw error;
@@ -63,9 +70,18 @@ export default function HomePage() {
   }
 
   function renderPosts() {
-    if (posts.length === 0) {
-      return <div>No new Posts</div>;
+    if (loading) {
+      return (
+        <div className="flex items-center justify-center mt-6">
+          <HashLoader size={150} color="red" loading={true} />
+        </div>
+      );
     }
+
+    if (posts.length === 0) {
+      return <div className="flex justify-center">No new Posts</div>;
+    }
+
     return posts?.map((post) => {
       return (
         <PostCard
@@ -111,7 +127,7 @@ export default function HomePage() {
                     {/*content*/}
                     <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full  bg-gradient-to-r from-rose-700 to-red-700 outline-none focus:outline-none">
                       {/*header*/}
-                      <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
+                      <div className="flex items-start justify-between p-5 border-b border-solid border-white rounded-t">
                         <h3 className="text-3xl font-semibold text-white">
                           Create Post
                         </h3>
@@ -208,7 +224,7 @@ export default function HomePage() {
         </div>
 
         <div className="min-h-screen w-5/6 rounded-md">
-          <div id="favors">{renderPosts()}</div>
+          <div id="posts">{renderPosts()}</div>
         </div>
       </div>
     </div>
