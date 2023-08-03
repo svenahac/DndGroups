@@ -34,12 +34,11 @@ export default function LoginPage() {
       )
       .then((res) => {
         console.log("Sent to server...");
-        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
-    navigate("/home");
+    navigate("/home", { state: { username: loginData.username } });
   }
 
   return (

@@ -4,7 +4,7 @@ import axios from "axios";
 
 function PostCard(props) {
   const post = props.post;
-
+  const username = props.username;
   const [showModal, setShowModal] = useState(false);
 
   async function deletePost() {
@@ -29,6 +29,8 @@ function PostCard(props) {
   const diffInMinutes = Math.round(time / (oneDay / 24 / 60));
   let hours = "hour";
   let days = "day";
+  let minutes = "minutes";
+
   if (diffInDays > 1) {
     days = "days";
   }
@@ -37,16 +39,29 @@ function PostCard(props) {
     hours = "hours";
   }
 
+  if (diffInMinutes > 1) {
+    minutes = "minutes";
+  } else if (diffInMinutes === 1) {
+    minutes = "minute";
+  }
+
   return (
     <div className="flex justify-center p-2 h-92">
       <div className="no-scrollbar flex flex-col w-full min-h-full border-2 overflow-y-scroll bg-gradient-to-r from-rose-700 to-red-700 font-normal text-white rounded-md">
         <div className="flex flex-row justify-between items-centers mt-1 border-b ">
           <div className="ml-2 text-l">@{post.creator_name}</div>
-          <div className="mr-2">
-            {diffInHours <= 24
-              ? `${diffInHours} ${hours} ago`
-              : `${diffInDays} ${days} ago`}
-          </div>
+          <div>{post.experience}</div>
+          {diffInMinutes < 60 ? (
+            <div className="mr-2">
+              {diffInMinutes} {minutes} ago
+            </div>
+          ) : (
+            <div className="mr-2">
+              {diffInHours <= 24
+                ? `${diffInHours} ${hours} ago`
+                : `${diffInDays} ${days} ago`}
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col border-b">
@@ -64,12 +79,21 @@ function PostCard(props) {
         </div>
         <div className="flex flex-row justify-end">
           <div className="w-1/3 mb-1 mt-1 mr-2 flex justify-end text-center">
-            <button
-              className="font-normal rounded-md p-2 bg-gradient-to-r from-green-500 to-green-600"
-              onClick={() => setShowModal(true)}
-            >
-              Send Msg
-            </button>
+            {post.creator_name === username ? (
+              <button
+                className="font-normal rounded-md p-2 bg-gradient-to-r from-rose-500 to-rose-600"
+                onClick={deletePost}
+              >
+                Delete
+              </button>
+            ) : (
+              <button
+                className="font-normal rounded-md p-2 bg-gradient-to-r from-green-500 to-green-600"
+                onClick={() => setShowModal(true)}
+              >
+                Send Msg
+              </button>
+            )}
           </div>
           {showModal ? (
             <>
@@ -86,7 +110,7 @@ function PostCard(props) {
                         className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                         onClick={() => setShowModal(false)}
                       >
-                        <span className="bg-transparent text-white h-6 w-6 text-2xl block outline-none focus:outline-none">
+                        <span className=" flex justify-center items-center bg-transparent text-white h-6 w-6 text-2xl outline-none focus:outline-none">
                           ×
                         </span>
                       </button>

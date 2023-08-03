@@ -3,18 +3,15 @@ import Navbar from "../components/Navbar";
 import { supabase } from "../api/supabaseClient";
 import PostCard from "../components/PostCard";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { HashLoader } from "react-spinners";
+import { useLocation } from "react-router-dom";
 
 export default function HomePage() {
-  const navigate = useNavigate();
-
   const [showModal, setShowModal] = useState(false);
-
+  const { state } = useLocation();
+  const [tempUsername, setTempUsername] = useState(state?.username);
   const [posts, setPosts] = useState([]);
-
   const [user, setUser] = useState({});
-
   const [loading, setLoading] = useState(true);
 
   async function getUser() {
@@ -40,7 +37,7 @@ export default function HomePage() {
         setPosts(data);
         setTimeout(() => {
           setLoading(false);
-        }, 100);
+        }, 500);
         console.log(data);
       }
     } catch (err) {
@@ -58,6 +55,7 @@ export default function HomePage() {
           location: postForm.location,
           date: postForm.datetime,
           size: postForm.size,
+          experience: postForm.experience,
           creator_name: user.username,
           u_id: user.id,
         })
@@ -86,6 +84,7 @@ export default function HomePage() {
       return (
         <PostCard
           post={post}
+          username={tempUsername ?? user.username}
           key={`${post.location}-${post.title}-${post.date}`}
         />
       );
@@ -98,6 +97,7 @@ export default function HomePage() {
     location: "",
     datetime: "YYYY-MM-DD",
     size: 0,
+    experience: "",
   });
 
   const handle_input_change = (event) => {
@@ -135,7 +135,7 @@ export default function HomePage() {
                           className="p-1 ml-auto bg-transparent border-0 text-white float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                           onClick={() => setShowModal(false)}
                         >
-                          <span className="bg-transparent text-white h-6 w-6 text-2xl block outline-none focus:outline-none">
+                          <span className="flex justify-center items-center bg-transparent text-white h-6 w-6 text-2xl outline-none focus:outline-none">
                             ×
                           </span>
                         </button>
@@ -160,6 +160,21 @@ export default function HomePage() {
                             placeholder="Title"
                             onChange={handle_input_change}
                           />
+                          <label className="text-lg font-semibold">
+                            Experience
+                          </label>
+                          <select
+                            className="border-2 border-border-blue-500 rounded-md p-2 mb-2"
+                            value={postForm.experience}
+                            name="experience"
+                            onChange={handle_input_change}
+                          >
+                            <option defaultValue={true} value="Beginner">
+                              Beginner
+                            </option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Experienced">Experienced</option>
+                          </select>
                           <label className="text-lg font-semibold">
                             Description
                           </label>

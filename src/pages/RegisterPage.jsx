@@ -7,6 +7,9 @@ export default function RegisterPage() {
     username: "",
     email: "",
     password: "",
+    first_name: "",
+    last_name: "",
+    date_of_birth: "YYYY-MM-DD",
   });
   const navigate = useNavigate();
   const navigateToLogin = () => {
@@ -27,9 +30,13 @@ export default function RegisterPage() {
         username: registerData.username,
         email: registerData.email,
         password: registerData.password,
+        first_name: registerData.first_name,
+        last_name: registerData.last_name,
+        date_of_birth: registerData.date_of_birth,
       })
       .then((res) => {
         console.log("Sent to server...");
+        console.log(registerData);
       })
       .catch((err) => {
         console.log(err);
@@ -38,13 +45,47 @@ export default function RegisterPage() {
 
   return (
     <div
-      id="LoginPage"
+      id="RegisterPage"
       className="m-0 flex flex-col min-h-screen justify-center items-center bg-gradient-to-r from-rose-700 to-red-700"
     >
       <div className="mb-10 text-4xl text-white flex justify-center align-middle items-center">
         Dnd Group Finder
       </div>
-      <div className="rounded-xl w-85 h-100 bg-white flex flex-col justify-center items-center ">
+      <div className="rounded-xl w-85 h-170 bg-white flex flex-col justify-center items-center ">
+        <div className="relative z-0 mb-6 w-72">
+          <input
+            type="text"
+            name="first_name"
+            id="first_name"
+            className="block py-2.5 px-0 w-full text-sm text-red-700 bg-transparent border-0 border-b-2 border-red-700 appearance-none focus:outline-none focus:ring-0 focus:border-red-700 peer"
+            placeholder=" "
+            required
+            onChange={handle_input_change}
+          />
+          <label
+            htmlFor="first_name"
+            className="peer-focus:font-medium absolute left-0 text-sm text-red-700 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >
+            First Name
+          </label>
+        </div>
+        <div className="relative z-0 mb-6 w-72">
+          <input
+            type="text"
+            name="last_name"
+            id="last_name"
+            className="block py-2.5 px-0 w-full text-sm text-red-700 bg-transparent border-0 border-b-2 border-red-700 appearance-none focus:outline-none focus:ring-0 focus:border-red-700 peer"
+            placeholder=" "
+            required
+            onChange={handle_input_change}
+          />
+          <label
+            htmlFor="last_name"
+            className="peer-focus:font-medium absolute left-0 text-sm text-red-700 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >
+            Last Name
+          </label>
+        </div>
         <div className="relative z-0 mb-6 w-72">
           <input
             type="text"
@@ -77,6 +118,23 @@ export default function RegisterPage() {
             className="peer-focus:font-medium absolute left-0 text-sm text-red-700 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
           >
             Email
+          </label>
+        </div>
+        <div className="relative z-0 mb-6 w-72">
+          <input
+            type="date"
+            name="date_of_birth"
+            id="date_of_birth"
+            className="block py-2.5 px-0 w-full text-sm text-red-700 bg-transparent border-0 border-b-2 border-red-700 appearance-none focus:outline-none focus:ring-0 focus:border-red-700 peer"
+            placeholder=" "
+            required
+            onChange={handle_input_change}
+          />
+          <label
+            htmlFor="date"
+            className="peer-focus:font-medium absolute left-0 text-sm text-red-700 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >
+            Date Of Birth
           </label>
         </div>
         <div className="relative z-0 mb-6 w-72">
@@ -118,6 +176,7 @@ export default function RegisterPage() {
             type="button"
             onClick={() => {
               postRegister();
+              navigateToLogin();
             }}
             className="text-white bg-red-700 hover:bg-rose-600 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2"
           >
