@@ -13,12 +13,16 @@ export default function HomePage() {
   const [posts, setPosts] = useState([]);
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
+  const [userLoading, setUserLoading] = useState(true);
 
   async function getUser() {
     const { data } = await axios.get("http://localhost:6969/users/login", {
       withCredentials: true,
     });
     setUser(data.user);
+    setTimeout(() => {
+      setUserLoading(false);
+    }, 500);
   }
 
   useLayoutEffect(() => {
@@ -38,7 +42,6 @@ export default function HomePage() {
         setTimeout(() => {
           setLoading(false);
         }, 500);
-        console.log(data);
       }
     } catch (err) {
       console.error(err.message);
@@ -108,6 +111,9 @@ export default function HomePage() {
     }));
   };
 
+  if (userLoading) {
+    return <div></div>;
+  }
   return (
     <div>
       <Navbar />

@@ -23,7 +23,7 @@ export default function ProfilePage() {
       console.error(err.message);
     }
   }
-  
+
   async function getMyPosts() {
     try {
       const { data, error } = await supabase
@@ -58,6 +58,15 @@ export default function ProfilePage() {
     });
   }
 
+  function formatDate(input) {
+    var datePart = input.split("-"),
+      year = datePart[0],
+      month = datePart[1],
+      day = datePart[2];
+
+    return day + "/" + month + "/" + year;
+  }
+
   useEffect(() => {
     getRating();
     getMyPosts();
@@ -68,14 +77,20 @@ export default function ProfilePage() {
       <Navbar />
       <div className="flex flex-col mt-4 items-center">
         <div className="flex flex-row justify-center w-5/6">
-          <div className="border-2 border-rose-500 h-36 w-72 rounded-xl p-2">
+          <div className="border-2 bg-gradient-to-r from-rose-500 to-red-500 border-rose-500 h-36 w-72 rounded-xl p-2">
             <div className="font-bold uppercase"> @{state.username}</div>
             <div>
               {state.name} {state.last_name}
             </div>
             <div>Email: {state.email}</div>
-            <div>Date Of Birth: {state.date_of_birth}</div>
-            <div>Rating: {rating}/5</div>
+            <div>Date Of Birth: {formatDate(state.date_of_birth)}</div>
+            <div>
+              {rating && rating !== 0 && rating !== null ? (
+                <span>{`Rating ${rating}/5 ⭐`}</span>
+              ) : (
+                <span>No Rating</span>
+              )}
+            </div>
           </div>
         </div>
         <div className="flex flex-row justify-center w-5/6 font-bold mt-2 mb-2 text-3xl">
