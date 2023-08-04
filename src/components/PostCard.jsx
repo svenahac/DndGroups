@@ -100,7 +100,7 @@ function PostCard(props) {
     let four = rating.four;
     let five = rating.five;
     let number_of_ratings = rating.number_of_ratings + 1;
-    console.log("before" + JSON.stringify(rating));
+
     if (rate === "1") {
       one = one + 1;
     } else if (rate === "2") {

@@ -9,7 +9,7 @@ export default function LoadingPage() {
   async function getUser() {
     const { data } = await axios.get("http://localhost:6969/users/login", { withCredentials: true });
     setIsLoggedIn(data.logged);
-    console.log(data.logged);
+    
   }
 
   useEffect(() => {
