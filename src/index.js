@@ -8,6 +8,7 @@ import {
   HomePage,
   ProfilePage,
   LoadingPage,
+  CharSheetPage,
 } from "./pages";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -20,6 +21,7 @@ root.render(
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/charSheet" element={<CharSheetPage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

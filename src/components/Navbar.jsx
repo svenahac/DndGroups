@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+
 import Menu from "./Menu";
 
 function Navbar() {
- 
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   return (
     <nav className="bg-gradient-to-r from-rose-700 to-red-700 font-normal">
@@ -11,7 +11,7 @@ function Navbar() {
           <div>DnD Group Finder</div>
         </div>
         <div className="hidden md:block">
-          <Menu/>
+          <Menu />
         </div>
         <button
           type="button"
