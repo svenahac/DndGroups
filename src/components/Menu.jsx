@@ -12,6 +12,7 @@ const Menu = () => {
       {},
       { withCredentials: true }
     );
+    localStorage.setItem("reload", "true");
     navigate("/login");
   };
 
@@ -27,8 +28,8 @@ const Menu = () => {
     navigate("/charSheet", { state: user });
   };
 
-  const navigateToChat = () => {
-    navigate("/chat");
+  const navigateToMessages = () => {
+    navigate("/messages", { state: user });
   };
 
   async function getUser() {
@@ -51,10 +52,10 @@ const Menu = () => {
         Home
       </a>
       <a
-        onClick={navigateToChat}
+        onClick={navigateToMessages}
         className="block md:inline-block px-3 py-2 rounded-md hover:text-rose-300 focus:outline-none focus:text-rose-300"
       >
-        Chat
+        Messages
       </a>
       <a
         onClick={navigateToCharSheet}

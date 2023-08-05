@@ -28,6 +28,13 @@ export default function HomePage() {
   }
 
   useLayoutEffect(() => {
+    if (localStorage.getItem("reload") === "true") {
+      localStorage.setItem("reload", "false");
+      setInterval(() => {
+        window.location.reload();
+      }, 100);
+    }
+
     getPosts();
     getUser();
   }, []);
@@ -112,6 +119,7 @@ export default function HomePage() {
       return (
         <PostCard
           post={post}
+          user={user}
           username={tempUsername ?? user.username}
           key={`${post.location}-${post.title}-${post.date}`}
         />

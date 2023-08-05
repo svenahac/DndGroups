@@ -4,14 +4,18 @@ import axios from "axios";
 
 function PostCard(props) {
   const post = props.post;
+  const user = props.user;
   const username = props.username;
   const [rating, setRating] = useState({});
   const [loading, setLoading] = useState(true);
-  const [newRating, setNewRating] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [rateModal, setRateModal] = useState(false);
+
   const [rateForm, setRateForm] = useState({
     rating: "0",
+  });
+  const [messageForm, setMessageForm] = useState({
+    content: "",
   });
 
   useEffect(() => {
@@ -21,6 +25,14 @@ function PostCard(props) {
   const handle_input_change = (event) => {
     const { name, value } = event.target;
     setRateForm((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handle_message_change = (event) => {
+    const { name, value } = event.target;
+    setMessageForm((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -51,6 +63,21 @@ function PostCard(props) {
           setLoading(false);
         }, 100);
       }
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+
+  async function sendMessage() {
+    try {
+      const { data, error } = await supabase.from("Message").insert([
+        {
+          u_id: user.id,
+          receiver: post.creator_name,
+          content: messageForm.content,
+        },
+      ]);
+      if (error) throw error;
     } catch (err) {
       console.error(err.message);
     }
@@ -320,10 +347,20 @@ function PostCard(props) {
                     </div>
                     {/*body*/}
                     <div className="relative p-6 flex-auto">
-                      <form className="flex flex-col">
+                      <form
+                        name="messageForm"
+                        id="messageForm"
+                        onSubmit={() => {
+                          setShowModal(false);
+                          sendMessage();
+                        }}
+                        className="flex flex-col"
+                      >
                         <label className="text-lg font-semibold">Message</label>
                         <textarea
-                          className="border-2 text-black border-rose-500 rounded-md p-2 mb-2"
+                          onChange={handle_message_change}
+                          name="content"
+                          className=" border-2 h-36 text-black border-rose-500 rounded-md p-2 mb-2"
                           placeholder="Write here"
                         />
                       </form>
@@ -332,9 +369,9 @@ function PostCard(props) {
                     <div className="flex items-center justify-center pt-1 border-t border-solid border-blueGray-200 rounded-b">
                       <button
                         className="bg-gradient-to-r from-green-500 to-green-600 text-white active:bg-primary font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
-                        type="button"
+                        type="submit"
+                        form="messageForm"
                         style={{ transition: "all .15s ease" }}
-                        onClick={() => setShowModal(false)}
                       >
                         Send
                       </button>
