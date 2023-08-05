@@ -7,7 +7,9 @@ export default function LoadingPage() {
   const [isLoggedIn, setIsLoggedIn] = useState();
 
   async function getUser() {
-    const { data } = await axios.get("http://localhost:6969/users/login", { withCredentials: true });
+    const { data } = await axios.get("https://dndb.svenahac.com/users/login", {
+      withCredentials: true,
+    });
     setIsLoggedIn(data.logged);
     
   }

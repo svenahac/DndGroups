@@ -18,7 +18,7 @@ export default function HomePage() {
   const [userLoading, setUserLoading] = useState(true);
 
   async function getUser() {
-    const { data } = await axios.get("http://localhost:6969/users/login", {
+    const { data } = await axios.get("https://dndb.svenahac.com/users/login", {
       withCredentials: true,
     });
     setUser(data.user);

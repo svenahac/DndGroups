@@ -8,7 +8,7 @@ const Menu = () => {
 
   const logOut = async () => {
     await axios.post(
-      "http://localhost:6969/users/logout",
+      "https://dndb.svenahac.com/users/logout",
       {},
       { withCredentials: true }
     );
@@ -33,7 +33,7 @@ const Menu = () => {
   };
 
   async function getUser() {
-    const { data } = await axios.get("http://localhost:6969/users/login", {
+    const { data } = await axios.get("https://dndb.svenahac.com/users/login", {
       withCredentials: true,
     });
     setUser(data.user);

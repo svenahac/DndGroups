@@ -25,7 +25,7 @@ export default function LoginPage() {
   function postLogin() {
     axios
       .post(
-        "http://localhost:6969/users/login/",
+        "https://dndb.svenahac.com/users/login/",
         {
           username: loginData.username,
           password: loginData.password,

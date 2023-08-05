@@ -26,7 +26,7 @@ export default function RegisterPage() {
 
   function postRegister() {
     axios
-      .post("http://localhost:6969/users/register/", {
+      .post("https://dndb.svenahac.com/users/register/", {
         username: registerData.username,
         email: registerData.email,
         password: registerData.password,
