@@ -166,8 +166,12 @@ function PostCard(props) {
     <div className="flex justify-center p-2 h-92">
       <div className="no-scrollbar flex flex-col w-full min-h-full border-2 overflow-y-scroll bg-gradient-to-r from-rose-700 to-red-700 font-normal text-white rounded-md">
         <div className="flex flex-row justify-between items-centers mt-1 border-b ">
-          <div className="ml-2 text-l">@{post.creator_name}</div>
-          <div>{post.experience}</div>
+          <div className="ml-2 text-l">
+            @{post.creator_name} is looking for{" "}
+            {post.lookingType === "Players"
+              ? "Players"
+              : `a ${post.lookingType}`}
+          </div>
           {diffInMinutes < 60 ? (
             <div className="mr-2">
               {diffInMinutes} {minutes} ago
@@ -197,7 +201,7 @@ function PostCard(props) {
         <div className="flex flex-row justify-between">
           <div className="w-1/3 mb-1 mt-1 ml-2 flex">
             <button
-              className="font-normal rounded-md p-2 bg-gradient-to-r from-cyan-500 to-blue-600"
+              className="font-normal w-32 rounded-md p-2 bg-gradient-to-r from-cyan-500 to-blue-600"
               onClick={() => {
                 if (post.creator_name !== username) {
                   setRateModal(true);
@@ -274,17 +278,20 @@ function PostCard(props) {
               <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
             </>
           ) : null}
+          <div className="w-1/3 font-bold  items-center flex justify-center text-center">
+            {post.experience}
+          </div>
           <div className="w-1/3 mb-1 mt-1 mr-2 flex justify-end text-center">
             {post.creator_name === username ? (
               <button
-                className="font-normal rounded-md p-2 bg-gradient-to-r from-rose-500 to-rose-600"
+                className="w-32 font-normal rounded-md p-2 bg-gradient-to-r from-rose-500 to-rose-600"
                 onClick={deletePost}
               >
                 Delete
               </button>
             ) : (
               <button
-                className="font-normal rounded-md p-2 bg-gradient-to-r from-green-500 to-green-600"
+                className="font-normal w-32 rounded-md p-2 bg-gradient-to-r from-green-500 to-green-600"
                 onClick={() => setShowModal(true)}
               >
                 Send Msg
