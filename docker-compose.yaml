@@ -1,0 +1,10 @@
+services:
+  app:
+    build: ./
+    restart: always
+    environment:
+      REACT_APP_SUPABASE_URL: https://myapp.supabase.co
+      REACT_APP_SUPABASE_ANON_KEY: key123
+    ports:
+      - '3000:3000'
+

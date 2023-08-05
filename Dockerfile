@@ -1,0 +1,20 @@
+FROM node:latest
+
+WORKDIR /app
+COPY package.json package-lock.json ./
+
+RUN npm install
+
+ARG REACT_APP_SUPABASE_URL
+ARG REACT_APP_SUPABASE_ANON_KEY
+
+ENV REACT_APP_SUPABASE_URL $REACT_APP_SUPABASE_URL
+ENV REACT_APP_SUPABASE_ANON_KEY $REACT_APP_SUPABASE_ANON_KEY
+
+COPY . .
+
+RUN npm run build
+
+EXPOSE 3000
+
+CMD ["npm", "run", "start"]
