@@ -194,10 +194,10 @@ function PostCard(props) {
       <div className="no-scrollbar flex flex-col w-full min-h-full border-2 overflow-y-scroll bg-gradient-to-r from-rose-700 to-red-700 font-normal text-white rounded-md">
         <div className="flex flex-row justify-between items-centers mt-1 border-b ">
           <div className="ml-2 text-l">
-            @{post.creator_name} is looking for{" "}
+            @{post.creator_name} is looking for
             {post.lookingType === "Players"
-              ? "Players"
-              : `a ${post.lookingType}`}
+              ? ` ${post.size} Players`
+              : ` a ${post.lookingType}`}
           </div>
           {diffInMinutes < 60 ? (
             <div className="mr-2">
